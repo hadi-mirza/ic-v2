@@ -38,11 +38,11 @@ export class AppComponent implements OnInit{
 
     getApplets() {
       this.lib.applets.forEach((x: any) => {
-        console.log(x.categories, this.selectedCategory)
+        // console.log(x.categories, this.selectedCategory)
         if (x.categories.includes(this.selectedCategory)) {
           this.applets.push(x.name)
         }
-        console.log('applets :', this.applets)
+        // console.log('applets :', this.applets)
       })
       
     }
@@ -50,7 +50,7 @@ export class AppComponent implements OnInit{
     setCategory(category: string) {
       this.applets = []
       this.selectedCategory = category
-      console.log(this.selectedCategory)
+      // console.log(this.selectedCategory)
       // if (this.selectedCategory === '') {
       //   this.selectedCategory = this.categories[0]
       //   console.log(this.categories)
@@ -63,5 +63,8 @@ export class AppComponent implements OnInit{
     ngOnInit(): void {
       this.getModel()
       this.getApplets()
+      // let onLoad = this.categories[0].toString()
+      // console.log(onLoad)
+      // this.selectedCategory = onLoad
     }
 }
