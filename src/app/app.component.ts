@@ -27,24 +27,31 @@ export class AppComponent implements OnInit {
 
   // For transforming the model, create a new model within the getModel() function: https://opensource.com/article/20/5/data-modeling-javascript
 
-  categories: any = [];
-  applets: any = [];
+  categories: string[] = [];
+  applets: string[] = [];
   selectedCategory: string = '';
+  searchValue: string = ''
 
-  getModel() {
-    let arr: any = [];
-    this.lib.applets.forEach((x) => {
-      x.categories.forEach((j) => {
-        arr.push(j);
+  getCategories() {
+    let arr: string[] = [];
+    if (this.searchValue) {
+      this.lib.applets.forEach((applet) => {
+        applet.categories.forEach((category) => {
+          arr.push(category);
+        });
       });
-    });
+    } else {
+      this.lib.categories.forEach((mainCategory) => {
+        arr.push(mainCategory);
+      })
+    }
     this.categories = uniq(arr);
   }
 
   getApplets() {
-    this.lib.applets.forEach((x: any) => {
-      if (x.categories.includes(this.selectedCategory)) {
-        this.applets.push(x.name);
+    this.lib.applets.forEach((applet: any) => {
+      if (applet.categories.includes(this.selectedCategory)) {
+        this.applets.push(applet.name);
       }
     });
   }
@@ -63,8 +70,8 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getModel();
-    this.getApplets();
+    this.getCategories();
+    // this.getApplets();
     // let onLoad = this.categories[0].toString()
     // console.log(onLoad)
     // this.selectedCategory = onLoad
