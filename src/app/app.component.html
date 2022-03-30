@@ -1,17 +1,26 @@
 <h1>Library</h1>
-<div *ngFor="let category of categories">
-    <li (click)="setCategory(category)">
-      {{ category }}
-    </li>
+<div class="row flex-row">
+  <div class="col">
+    <h3>Categories</h3>
+    <ul class="nav nav-pills flex-column">
+      <div *ngFor="let category of categories">
+        <li class="nav-item" (click)="setCategory(category)">
+          <button class="nav-link text-start">
+            {{ category }}
+          </button>
+        </li>
+      </div>
+    </ul>
   </div>
-
-  <hr />
-
-  <div>
+  <div class="col">
+    <h3>Applets</h3>
     {{ getApplets() }}
     <div *ngFor="let applet of applets">
-      <li>
-        {{ applet }}
-      </li>
+      <div class="card mb-3">
+        <div class="card-header">
+          {{ applet }}
+        </div>
+      </div>
     </div>
   </div>
+</div>
