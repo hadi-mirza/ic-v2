@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { isBoolean, mapValues, uniq, includes } from 'lodash';
+import { uniq } from 'lodash';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
@@ -8,7 +9,7 @@ import { isBoolean, mapValues, uniq, includes } from 'lodash';
 })
 export class AppComponent implements OnInit {
   lib = {
-    categories: ['Performance', 'Investments', 'Operations'],
+    categories: ['Performance', 'Investments', 'Operations', 'Wealth'],
     applets: [
       {
         name: 'Performance Snapshot',
@@ -42,28 +43,34 @@ export class AppComponent implements OnInit {
   selectedCategory: string = '';
   searchValue: string = '';
   activeTabIndex: number = 0;
+  searchControl = new FormControl();
+  allCategories: string[] = [];
 
-  getCategories() {
-    let arr: string[] = [];
-    if (this.searchValue) {
-      // This needs to be reduced
-      this.lib.applets.forEach((applet) => {
-        applet.categories.forEach((category) => {
-          arr.push(category);
-        });
+  constructor() {
+    this.searchControl.valueChanges.subscribe((value) => {
+      this.searchValue = value;
+      value.length > 0
+        ? this.getCategoriesWithApplets()
+        : this.getAllCategories();
+    });
+  }
+
+  getAllCategories() {
+    this.getCategoriesWithApplets();
+    this.lib.categories.map((mainCategories) =>
+      this.allCategories.push(mainCategories)
+    );
+    this.categories = uniq(this.allCategories);
+  }
+
+  getCategoriesWithApplets() {
+    this.allCategories = [];
+    this.lib.applets.map((applet) => {
+      applet.categories.map((category) => {
+        this.allCategories.push(category);
       });
-    } else {
-      // This needs to be reduced
-      this.lib.applets.forEach((applet) => {
-        applet.categories.forEach((category) => {
-          arr.push(category);
-        });
-      });
-      this.lib.categories.forEach((mainCategory) => {
-        arr.push(mainCategory);
-      });
-    }
-    this.categories = uniq(arr);
+    });
+    this.categories = uniq(this.allCategories);
   }
 
   getApplets() {
@@ -86,11 +93,7 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getCategories();
-    if (this.selectedCategory === '') {
-      this.selectedCategory = this.categories[0];
-      this.getApplets();
-    }
-    // console.log(this.categories[0]);
+    this.getAllCategories();
+    this.selectedCategory = this.categories[0];
   }
 }

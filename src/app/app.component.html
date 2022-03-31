@@ -1,12 +1,11 @@
 <h1>Library</h1>
 <div class="row flex-row">
   <input
-    type="text"
+    type="search"
     placeholder="Search applets"
-    [(ngModel)]="searchValue"
     name="search"
     id="search"
-    #search="ngModel"
+    [formControl]="searchControl"
   />
   <div class="col">
     <h3>Categories</h3>
@@ -24,6 +23,7 @@
     </ul>
   </div>
   <div class="col">
+    {{ getApplets() }}
     <h3>Applets</h3>
     <div *ngFor="let applet of applets">
       <div class="card mb-3">
