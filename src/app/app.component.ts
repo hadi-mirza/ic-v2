@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { isBoolean, mapValues, uniq } from 'lodash';
+import { isBoolean, mapValues, uniq, includes } from 'lodash';
 
 @Component({
   selector: 'app-root',
@@ -22,58 +22,70 @@ export class AppComponent implements OnInit {
         name: 'CMS',
         categories: ['Investments', 'Performance'],
       },
+      {
+        name: 'Test1',
+        categories: ['Investments', 'Operations'],
+      },
+      {
+        name: 'Test 2',
+        categories: ['Banking', 'Performance'],
+      },
+      {
+        name: 'Test 3',
+        categories: ['Banking', 'Operations'],
+      },
     ],
   };
-
-  // For transforming the model, create a new model within the getModel() function: https://opensource.com/article/20/5/data-modeling-javascript
 
   categories: string[] = [];
   applets: string[] = [];
   selectedCategory: string = '';
-  searchValue: string = ''
+  searchValue: string = '';
+  activeTabIndex: number = 0;
 
   getCategories() {
     let arr: string[] = [];
     if (this.searchValue) {
+      // This needs to be reduced
       this.lib.applets.forEach((applet) => {
         applet.categories.forEach((category) => {
           arr.push(category);
         });
       });
     } else {
+      // This needs to be reduced
+      this.lib.applets.forEach((applet) => {
+        applet.categories.forEach((category) => {
+          arr.push(category);
+        });
+      });
       this.lib.categories.forEach((mainCategory) => {
         arr.push(mainCategory);
-      })
+      });
     }
     this.categories = uniq(arr);
   }
 
   getApplets() {
+    this.applets = [];
     this.lib.applets.forEach((applet: any) => {
-      if (applet.categories.includes(this.selectedCategory)) {
+      if (
+        applet.categories.includes(this.selectedCategory) &&
+        applet.name.includes(this.searchValue)
+      ) {
         this.applets.push(applet.name);
       }
     });
   }
 
-  setCategory(category: string) {
+  setCategory(category: string, index: number) {
     this.applets = [];
     this.selectedCategory = category;
-    // console.log(this.selectedCategory)
-    // if (this.selectedCategory === '') {
-    //   this.selectedCategory = this.categories[0]
-    //   console.log(this.categories)
-    // } else {
-    //   this.selectedCategory = category
-    //   console.log(this.selectedCategory)
-    // }
+    this.activeTabIndex = index;
   }
 
   ngOnInit(): void {
     this.getCategories();
-    // this.getApplets();
-    // let onLoad = this.categories[0].toString()
-    // console.log(onLoad)
-    // this.selectedCategory = onLoad
+    // console.log(this.categories[0]);
   }
 }

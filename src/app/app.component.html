@@ -1,11 +1,22 @@
 <h1>Library</h1>
 <div class="row flex-row">
+  <input
+    type="text"
+    placeholder="Search applets"
+    [(ngModel)]="searchValue"
+    name="search"
+    id="search"
+    #search="ngModel"
+  />
   <div class="col">
     <h3>Categories</h3>
     <ul class="nav nav-pills flex-column">
-      <div *ngFor="let category of categories">
-        <li class="nav-item" (click)="setCategory(category)">
-          <button class="nav-link text-start">
+      <div *ngFor="let category of categories; let i = index">
+        <li class="nav-item" (click)="setCategory(category, i)">
+          <button
+            class="nav-link text-start"
+            [ngClass]="{ active: i === activeTabIndex }"
+          >
             {{ category }}
           </button>
         </li>
