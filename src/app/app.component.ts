@@ -82,10 +82,15 @@ export class AppComponent implements OnInit {
     this.applets = [];
     this.selectedCategory = category;
     this.activeTabIndex = index;
+    this.getApplets();
   }
 
   ngOnInit(): void {
     this.getCategories();
+    if (this.selectedCategory === '') {
+      this.selectedCategory = this.categories[0];
+      this.getApplets();
+    }
     // console.log(this.categories[0]);
   }
 }
